@@ -1,0 +1,251 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+
+\usepackage[brazilian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{mathrsfs,amssymb,amsthm,amsmath}
+\usepackage[usenames]{color}
+
+
+\setlength{\marginparwidth}{0pt}
+\setlength{\topmargin}{0pt}
+\setlength{\headheight}{0pt}
+\setlength{\headsep}{0pt}
+
+
+\newtheorem{teor}{Teorema}[section]
+\newtheorem{defi}[teor]{Definição}
+\newtheorem{lema}[teor]{Lema}
+\newtheorem{prop}[teor]{Proposição}
+\newtheorem{coro}[teor]{Corolário}
+\newtheorem{exem}[teor]{Exemplo}
+\newtheorem{prob}[teor]{Problema}
+\newtheorem{nota}[teor]{Notação}
+\newtheorem*{nota-}{Notação}
+\newtheorem{conv}[teor]{Convenção}
+\newtheorem{obse}[teor]{Observação}
+\newtheorem{perg}[teor]{Pergunta}
+\newtheorem{exec}[teor]{Exercício}
+\newtheorem{fato}[teor]{Fato}
+\newtheorem{afir}[teor]{Afirmação}
+
+
+\title{UFABC | PDPD - Uma Introdução para a Teoria de Ramsey}
+\author{Gabriel Frigo}
+\date{Agosto 2024}
+
+
+\begin{document}
+\maketitle
+
+
+% ################################
+\section{Essencial}
+% ################################
+
+
+\begin{defi}
+    \label{finite_partition_c}
+    Um \emph{conjunto finito de $r$ cores} pode ser identificados ou interpretados como sendo um conjunto de inteiros $[r]$. Sendo:
+    \[[r]:=\{1, ..., r\}\]
+
+    Dado um conjunto $S$ não vazio, uma partição finita desse conjunto é uma coleção de subconjuntos de $S_1, ..., S_r$ tal que a intersecção dois a dois deles sejam sempre vazios e a união deles sejam o próprio conjunto $S$
+    \[\forall{a,b} \in [r], (a \neq b \Rightarrow S_a \cap S_b = \emptyset)\]
+    \[S = S_1 \cup ... \cup S_r \]
+
+    Uma \emph{partição finita do conjunto $S$} pode ser representada como uma função $c$. Sendo:
+    \[c:S\rightarrow[r]\]
+\end{defi}
+
+\begin{defi}
+    \label{subset_p}
+    O \emph{conjunto de subconjuntos de $S$ de tamanho $p$} é denotado por $[S]^p$, que é definido como:
+    \[[S]^p:=\{T: T \subseteq S, |T| = p\}\]
+
+    Quando o $S$ for igual a $[r]:=\{1, ..., r\}$, para melhorar a leitura, vamos definir que $[[n]]^p = [n]^p$
+\end{defi}
+
+\begin{defi}
+    \label{graph_g}
+    Um \emph{grafo} é um par ordenado de contem um conjunto de vértices $V$ com tamanho $r$ e um conjunto de arestas $A$. Cada aresta liga 2 vértices distintos, sendo que 2 arestas distintas nunca vão ligar os mesmos 2 vértices distintos. Um grafo $G$ é denotado por:
+    \[V \neq \emptyset\]
+    \[A \subseteq [V]^2\]
+    \[G = (V, A)\]
+
+    Um \emph{grafo completo} é definido como um grafo que todos os seus vértices são conectados entre si por arestas. O conjunto das arestas $A$ é definido em um grafo completo como:
+    \[A = [V]^2\]
+
+    Um \emph{subgrafo} $G' = (V', A')$ de $G = (V, A)$ é definido como um grafo que seguem as seguintes propriedades:
+    \[V' \subseteq V \And V' \neq \emptyset\]
+    \[A' = \{a': a' \in [V']^2 \wedge a' \in A\}\]
+
+    (Observação: Os grafos usados no Teorema de Ramsey sempre serão grafos completos, ou seja, nunca terá 2 vértices que não são conetados diretamente por 1 aresta)
+\end{defi}
+
+\begin{defi}
+    \label{coloring_r}
+    Um grafo $r$\emph{-colorido} significa que as arestas do grafo são pintadas com uma dentre as $r$ cores. O que essencialmente significa que em um grafo $G = (V, A)$, o conjunto das arestas $A$ terá uma partição finita definida por:
+    \[c:A\rightarrow[r]\]
+\end{defi}
+
+\begin{defi}
+    \label{monochromatic_k}
+    Um subgrafo $G' = (V', A')$ de $G = (V, A)$ é \emph{monocromático} se para função $c:A\rightarrow[r]$, $c|_{A'}$ for constante.
+
+    (Observação: $c|_{A'}$ significa que o novo domínio da função $c$ é $A'$. Sendo o domínio original era o conjunto $A$)
+\end{defi}
+
+\begin{defi}
+    \label{essential_notation_graph}
+    \emph{Notação da Seta (Notação Essencial) para Grafos}:
+
+    Tendo um grafo completo $G = (V, A)$, se $|V| = N$, então para toda $r$\emph{-coloração} de $G$, vai existir um subgrafo monocromático de tamanho $k$
+    \[N\longrightarrow(k)_r^2\]
+\end{defi}
+
+\begin{defi}
+    \label{ramsey_number}
+    O \emph{Numero de Ramsey} $R(k)$ é o menor numero natural $N$ tal que $N\longrightarrow(k)_2^2$
+    \[R(k) = \min(\{N: N\longrightarrow(k)_2^2\})\]
+\end{defi}
+
+
+% ################################
+\section{Teoremas}
+% ################################
+
+
+% ###### 1.16 ###### %
+\begin{teor}
+    (Teorema de Ramsey para grafos completos $2$\emph{-colorido}):
+
+    Para qualquer $k \ge 2$, existe um $N$ inteiro tal que pra todo grafo $2$\emph{-colorido} com pelo menos $N$ vértices terá um subgrafo monocromático de tamanho $k$. Ou seja, temos que:
+    \[N\longrightarrow(k)_2^2\]
+\end{teor}
+
+\begin{proof}
+    Considere um grafo completo $K_N$ com $N$ vértices que seja $2$\emph{-colorido}, e que $N$ seja suficientemente grande.
+
+    A gente vai construir um subgrafo $K_k$ monocromático em duas etapas. Na primeira etapa vamos selecionar os vértices
+    \[v_1, v_2, v_3, ...\]
+    De tal maneira que todas as arestas que conectam $v_i$ com os vértices seguintes são de mesma cor. Já na etapa 2 vamos selecionar uma subsequencia do $v_i$ que crie o nosso grafo monocromático $K_N$
+
+    Etapa 1:
+
+    Etapa 2:
+\end{proof}
+% ###### 1.16 ###### %
+
+
+% ###### ?1.18? ###### %
+\begin{teor}
+\end{teor}
+
+\begin{proof}
+\end{proof}
+% ###### ?1.18? ###### %
+
+
+% ###### 1.20 ###### %
+\begin{teor}
+    (Teorema de Schur’s):
+
+    Para todo $k$ inteiro positivo, existe um número inteiro positivo $M(k)$ tal que se o conjunto $[M(k)]$ for particionado em $k$ subconjuntos, então em pelo menos um desses subconjuntos conterá um conjunto da forma $\{x, y, x+y\}$
+\end{teor}
+
+\begin{proof}
+    Podemos abstrair a questão para se enquadrar na Teoria de Ramsey. Reescrevendo a questão ficamos com:
+
+    "Para todo $k$ inteiro positivo, existe um número inteiro positivo $M(k)$ tal que se um grafo $G = (V, A)$ completo com $V = [M(k)]$ for $k$\emph{-colorido}, então existirá um triangulo monocromático da forma $\{x, y, x+y\}$"
+
+    Para essa reescrita ser equivalente ao enunciado anterior, vamos elaborar um argumento que faz com que eles sejam equivalentes.
+
+    Vamos pegar um triangulo genérico com os vértices $z, y, x$ podemos definir as suas arestas como números:
+    \[a \equiv yx = |y-x|,\]
+    \[b \equiv zy = |z-y|,\]
+    \[c \equiv zx = |z-x|,\]
+    Sem perda de generalidade, podemos considerar que $z > y > x$, logo teremos:
+    \[a \equiv yx = y-x,\]
+    \[b \equiv zy = z-y,\]
+    \[c \equiv zx = z-x,\]
+    Com isso temos que $a + b = c$.
+    Além disso, sabemos que $a, b, c \in V$, já que $0 < a, b, c < M(k)$. Podemos definir a cor das arestas $a,b,c$ como sendo a cor dos v
+\end{proof}
+% ###### 1.20 ###### %
+
+
+% ###### 1.23 ###### %
+\begin{teor}
+    (Greenwood e Gleason):
+    O Número de Ramsey  $R(m, n)$ existe para todo $m,n \geq 1$ e satisfazem
+    \[R(m, n) \leq R(m-1, n) + R(m, n-1)\]
+    para todo $m,n \geq 2$.
+\end{teor}
+
+\begin{proof}
+
+\end{proof}
+% ###### 1.23 ###### %
+
+
+% ###### 1.24 ###### %
+\begin{teor}
+    Para todo $m,n \geq 2$, o Número de Ramsey  $R(m, n)$ satisfaz
+    \[R(m, n) \leq \binom{m+n-2}{m-1}\]
+\end{teor}
+
+\begin{proof}
+
+\end{proof}
+% ###### 1.24 ###### %
+
+
+% ###### 1.25 ###### %
+\begin{teor}
+    Se $R(m-1, n) = 2p$ e $R(m, n-1) = 2q$ sendo $p$ e $q$ inteiros, temos que $R(m, n) < R(m-1, n) + R(m, n-1)$
+\end{teor}
+
+\begin{proof}
+
+\end{proof}
+% ###### 1.25 ###### %
+
+
+% ###### 1.26 ###### %
+\begin{teor}
+    $R(3, 4) = 9$ e $R(3, 5) = 14$
+\end{teor}
+
+\begin{proof}
+
+\end{proof}
+% ###### 1.26 ###### %
+
+
+% ###### 1.27 ###### %
+\begin{teor}
+    $R(4, 4) = 18$
+\end{teor}
+
+\begin{proof}
+
+\end{proof}
+% ###### 1.27 ###### %
+
+
+% ###### 2.1 ###### %
+\begin{teor}
+    (Teorema de Ramsey Infinito para grafos completos $2$\emph{-colorido}):
+
+    Seja $Z$ um conjunto infinito . Para qualquer $p \ge 1$, se $[Z]^p$ é $2$\emph{-colorido}, então existe um conjunto infinito $H \in Z$ tal que $[H]^p$ é monocromático.
+\end{teor}
+
+\begin{proof}
+
+\end{proof}
+% ###### 2.1 ###### %
+
+
+\end{document}
+
