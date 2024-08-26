@@ -4,6 +4,7 @@
 
 \usepackage[brazilian]{babel}
 \usepackage[T1]{fontenc}
+\usepackage{mathtools}
 \usepackage{mathrsfs,amssymb,amsthm,amsmath}
 \usepackage[usenames]{color}
 
@@ -12,6 +13,10 @@
 \setlength{\topmargin}{0pt}
 \setlength{\headheight}{0pt}
 \setlength{\headsep}{0pt}
+
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
 
 \newtheorem{teor}{Teorema}[section]
@@ -46,6 +51,11 @@
 
 
 \begin{defi}
+  \label{size_of_set}
+  O \emph{tamanho de um conjunto finito} $C$ de tamanho $N$ pode ser denotado por $\#C = N$ e $\mid C \mid = N$
+\end{defi}
+
+\begin{defi}
     \label{finite_partition_c}
     Um \emph{conjunto finito de $r$ cores} pode ser identificados ou interpretados como sendo um conjunto de inteiros $[r]$. Sendo:
     \[[r]:=\{1, ..., r\}\]
@@ -68,12 +78,12 @@
 
 \begin{defi}
     \label{graph_g}
-    Um \emph{grafo} é um par ordenado de contem um conjunto de vértices $V$ com tamanho $r$ e um conjunto de arestas $A$. Cada aresta liga 2 vértices distintos, sendo que 2 arestas distintas nunca vão ligar os mesmos 2 vértices distintos. Um grafo $G$ é denotado por:
+    Um \emph{grafo} é um par ordenado de contem um conjunto de vértices $V$ e um conjunto de arestas $A$. Cada aresta liga 2 vértices distintos, sendo que 2 arestas distintas nunca vão ligar os mesmos 2 vértices distintos. Um grafo $G$ é denotado por:
     \[V \neq \emptyset\]
     \[A \subseteq [V]^2\]
     \[G = (V, A)\]
 
-    Um \emph{grafo completo} é definido como um grafo que todos os seus vértices são conectados entre si por arestas. O conjunto das arestas $A$ é definido em um grafo completo como:
+    Um \emph{grafo completo} é definido como um grafo que todos os seus vértices são conectados entre si por arestas. Um grafo completo de $N$ vértices é denotado por $K_N$ e o conjunto das arestas $A$ é definido como:
     \[A = [V]^2\]
 
     Um \emph{subgrafo} $G' = (V', A')$ de $G = (V, A)$ é definido como um grafo que seguem as seguintes propriedades:
@@ -125,31 +135,124 @@
 \end{teor}
 
 \begin{proof}
-    Considere um grafo completo $K_N$ com $N$ vértices que seja $2$\emph{-colorido}, e que $N$ seja suficientemente grande.
+    Considere um grafo completo $K_N = (V,A)$ com $N$ vértices que seja $2$\emph{-colorido}, e que $N$ seja suficientemente grande.
 
     A gente vai construir um subgrafo $K_k$ monocromático em duas etapas. Na primeira etapa vamos selecionar os vértices
     \[v_1, v_2, v_3, ...\]
-    De tal maneira que todas as arestas que conectam $v_i$ com os vértices seguintes são de mesma cor. Já na etapa 2 vamos selecionar uma subsequencia do $v_i$ que crie o nosso grafo monocromático $K_N$
+    De tal maneira que todas as arestas que conectam $v_i$ com os vértices sucessores dele próprio são de mesma cor. Já na etapa 2 vamos selecionar uma subsequencia dessa sequencia que crie o nosso grafo monocromático $K_N$
 
     Etapa 1:
+    Chamaremos $K_N$ de $G_1 = (V_1, A_1)$. Pegamos um vértice arbitrário $v_1$ de $V_1$ e separamos os $\#V_1-1$ restantes em 2 grupos, os vermelhos, que tem arestas vermelhas com $v_1$, e os azuis, que tem arestas azuis com $v_1$.
+    Pelo principio das casas dos pombos, no mínimo $\ceil{(\#V_1-1)/2}$ serão azuis ou vermelhos. Chamaremos a cor majoritária de $c_1$ e o conjunto de vértices que se conecta com $v_1$ com essa cor de $V_2$.
+    $V_2$ implica no subgrafo $G_2 = (V_2, A_2)$ de $G_1$. Agora iremos repetir todo o processo partindo de $G_2$, escolhendo o $v_2$ arbitrário e achando a cor $c_2$ e chegando em $V_3$ e assim por diante...
+    Apos chegar em $G_t = (V_t,A_t)$ sendo que $\#V_t = 1$, teremos uma sequencias de vértices
+    \[S_v = (v_1, v_2, ..., v_t)\]
+    E teremos uma sequencia de cores
+    \[S_c = (c_1, c_2, ..., c_t)\]
+    E teremos uma sequencia de subgrafos
+    \[K_n = G_1 \supset G_2 \supset ... \supset G_t\]
+    Apos esse processo, a nossa sequencia de vértices $S_v$ terá a seguinte propriedade: "Para qualquer vértice $v_i$ na sequencia, todos os vértices posteriores a ele (se eles existirem), digamos $v_j$ com $j > i$, são conectados com $v_i$, sendo que a cor da aresta é $c_i$."
 
     Etapa 2:
+    Agora, basta criar um subgrafo monocromático a partir da sequencia $S_v$. Para isso usaremos o principio das casas dos pombos e chegaremos que no mínimo $\ceil{t/2}$ serão azuis ou vermelhas, chamaremos a cor majoritária de $c$. Se criarmos uma subsequencia $S_v'$ da sequencia $S_v$, tal que:
+    \[S_v' = \{v_i: v_i \in S_v \wedge c_i = c\}\]
+    \[\#S_v' \ge \ceil{t/2}\]
+    \[S_a' = [S_v']^2\]
+    \[k = \#S_v'\]
+    Pronto, o subgrafo completo de $k$ elementos $K_k = (S_v', S_a')$ de $K_N$ é um grafo monocromático.
+
+    Pra confirmar isso basta notar que para 2 vértices arbitrários, digamos, $v_i$ e $v_j$, podemos sem perda de generalidade definir que $i < j$. Porém pela construção do grafo, temos que a aresta que liga $v_i$ e $v_j$ tem cor $c$. Logo todas as arestas do grafo $K_k$ são de cor $c$, já que $v_i$ e $v_j$ são arbitrários.
+
+    Por fim é preciso relacionar o valor de $N$ com $k$. Em cada repetição na Etapa 1, eram no máximo removidos metade dos vértices, logo se no final da Etapa 1 tínhamos $t$ vértices, isso significa que no máximo tínhamos $2^t$ vértices no Grafo original, ou seja, na pior das hipóteses
+    \[N = 2^t\]
+    (Sendo em geral, $N \leq 2^t$). Vimos na etapa 2 que o grafo monocromático vai ter no mínimo $t/2$ vértices, ou seja, na pior das hipóteses
+    \[k = t/2\]
+    (Sendo em geral, $t \geq k \geq t/2$). Portanto chegamos que na pior das hipóteses, temos que
+    \[N = 2^{2k}\]
+    Isso implica que na pior das hipóteses temos que
+    \[k = \frac{\log_2(N)}{2}\]
+    (Sendo em geral, $N \leq 2^{2k}$). Ou seja, sempre vai ser possível achar um subgrafo $K_k$ de tamanho $k$ monocromático partir de um grafo completo de tamanho $N$ se:
+    \[N \geq 2^{2k}\]
+    Isso implica que partir de um grafo de tamanho $N$, sempre será possível achar um subgrafo monocromático completo de tamanho $k$ se:
+    \[k \leq \frac{\log_2(N)}{2}\]
 \end{proof}
 % ###### 1.16 ###### %
 
 
-% ###### ?1.18? ###### %
+% ###### 1.18 ###### %
 \begin{teor}
+    (1) Com base no \emph{Teorema de Ramsey}, demonstre que para todo inteiro positivo $k$ existe um numero $N(k)$ inteiro positivo tal que para uma sequencia de $N(k)$ inteiros $a_1, ..., a_{N(k)}$, existe uma sub-sequencia não decrescente ou não crescente de $k$ elementos.
+
+    (2) Prove também que $N(k+1) > n^2$
 \end{teor}
 
 \begin{proof}
+    (1) Para provarmos que para todo inteiro positivo $k$ existe um numero $N(k)$ inteiro positivo tal que para uma sequencia de $N(k)$ inteiros $a_1, ..., a_{N(k)}$, existe uma sub-sequencia não decrescente ou decrescente de $k$ elementos. Basta transformarmos isso em um grafo completo $2$\emph{-colorido} em que a existência de um sub-grafo completo monocromático de $k$ elementos implique em uma subsequencia não decrescente. Com essa ideia, obtemos a seguinte construção do grafo.
+
+    "Para todo $i,j \in [N(k)]$ tal que $i > j$, temos que a cor da aresta entre $a_i$ e $a_j$ vai ser pintada de azul se $a_i \ge a_j$, senão ela será pintada de vermelho"
+
+    Com essa construção garantimos que todo subgrafo completo monocromático de tamanho $k$ é o equivalente a ter sub-sequencia não decrescente ou decrescente de tamanho $k$. Para notar isso basta perceber que se $v_1, v_2, ..., v_n$ forem vértices desse subgrafo monocromático vermelho, então pra todo $i > j$, temos que $v_i \ge v_j$, e isso é a definição de uma sequencia não decrescente. Se a cor for na verdade azul, vamos ter que para todo $i > j$, temos que $v_i < v_j$, e isso é a definição de uma sequencia decrescente.
+
+    Para provar para sequencias crescentes e não crescentes basta usar o mesmo raciocínio usado para sequencias decrescentes e não decrescentes. Juntando os 2 temos para sequencias não decrescentes e não crescentes
+
+    (2) Para provar que $N(k+1) > n^2$, basta achar um contra exemplo de $n^2$ elementos e que não seja possível achar uma sequencia não decrescente ou não crescente de tamanho $n+1$
+
+    \begin{table}[h]
+    \centering
+    \caption{Contra Exemplo, Valores}
+    \begin{tabular}{lllll}
+    $k(k-1)+1$ & $k(k-2)+1$ & ... & $k+1$ & $1$ \\
+    $k(k-1)+2$ & $k(k-2)+2$ & ... & $k+2$ & $2$ \\
+    ... & ... & ... & ... & ... \\
+    $k^2-1$ & $k(k-1)$-1 & ... & $2k-1$ & $k-1$ \\
+    $k^2$ & $k(k-1)$ & ... & $2k$ & $k$
+    \end{tabular}
+    \end{table}
+
+    \begin{table}[h]
+    \centering
+    \caption{Contra Exemplo, Índices}
+    \begin{tabular}{lllll}
+    $1$ & $2$ & ... & $k-1$ & $k$ \\
+    $k+1$ & $k+2$ & ... & $2k-1$ & $2k$ \\
+    ... & ... & ... & ... & ... \\
+    $k(k-2)+1$ & $k(k-2)+2$ & ... $k(k-1)-1$ & $k(k-1)$ \\
+    $k(k-1)+1$ & $k(k-1)+2$ & ... & $k^2-1$ & $k^2$ \\
+    \end{tabular}
+    \end{table}
+
+    \begin{table}[h]
+    \centering
+    \caption{Contra Exemplo, Posições}
+    \begin{tabular}{lllll}
+    $(1,1)$ & $(2,1)$ & ... & $(k-1,1)$ & $(k,1)$ \\
+    $(1,2)$ & $(2,2)$ & ... & $(k-1,2)$ & $(k,2)$ \\
+    ... & ... & ... & ... & ... \\
+    $(1,k-1)$ & $(2,k-1)$ & ... & $(k-1,k-1)$ & $(k,k-1)$ \\
+    $(1,k)$ & $(2,k)$ & ... & $(k-1,k)$ & $(k,k)$ \\
+    \end{tabular}
+    \end{table}
+
+    Nessa tabela com $k$ linhas e $k$ colunas, se a primeira linha for os primeiros $k$ elementos da sequencia, a segunda linha for os próximos $k$ elementos da sequencia e assim por diante... Teremos uma sequencia de $k^2$ elementos que não tem uma sub-sequencia não decrescente ou não crescente de no mínimo $k+1$ elementos. Isso acontece porque temos as seguintes relações com os elementos
+    \[e_{x,y} < e_{x-k_1,y+k_2}\]
+    \[e_{x,y} > e_{x+k_1,y-k_2}\]
+    Sendo $k_1,k_2 \in \mathbb{N}$ quaisquer (desde que as coordenadas fiquem no intervalo $[1,k]$), mais especificamente temos que
+    \[e_{x,y} < e_{x,y+k_2} < e_{x-k_1,y}\]
+    \[e_{x,y} > e_{x,y-k_2} > e_{x+k_1,y}\]
+    Com essas propriedades é possível provar que a maior sequencia necessariamente vai ter o tamanho das colunas ou das linhas (nesse caso ambas $k$), sendo facilmente visível na tabela essa propriedade.
+
+    As coordenadas $x,y$ da tabela podem ser convertidas para os valores $e$ da sequencia usando essa equação
+    \[e=k*(k-x)+y\]
+
+    As coordenadas $x,y$ da tabela podem ser convertidas em um índice $i$ da sequencia usando essa equação
+    \[i=x+k*(y-1)\]
 \end{proof}
-% ###### ?1.18? ###### %
+% ###### 1.18 ###### %
 
 
 % ###### 1.20 ###### %
 \begin{teor}
-    (Teorema de Schur’s):
+    (Teorema de Schur):
 
     Para todo $k$ inteiro positivo, existe um número inteiro positivo $M(k)$ tal que se o conjunto $[M(k)]$ for particionado em $k$ subconjuntos, então em pelo menos um desses subconjuntos conterá um conjunto da forma $\{x, y, x+y\}$
 \end{teor}
@@ -158,6 +261,11 @@
     Podemos abstrair a questão para se enquadrar na Teoria de Ramsey. Reescrevendo a questão ficamos com:
 
     "Para todo $k$ inteiro positivo, existe um número inteiro positivo $M(k)$ tal que se um grafo $G = (V, A)$ completo com $V = [M(k)]$ for $k$\emph{-colorido}, então existirá um triangulo monocromático da forma $\{x, y, x+y\}$"
+
+    O que pretendermos fazer é:
+    1) Fazer um paralelo com as cores dos vértices com as cores das arestas
+    2) Provar que se existir 3 vértices $x, y, x+y$ de mesma cor é o equivalente a existir um triangulo com as arestas de mesma cor
+    3) Usando o Teorema de Ramsey para grafos completos $k$\emph{-colorido}, vai existir um $M(k)$ tal que esse triangulo exista, logo existira 3 pontos $x, y, x+y$ de mesma cor
 
     Para essa reescrita ser equivalente ao enunciado anterior, vamos elaborar um argumento que faz com que eles sejam equivalentes.
 
@@ -248,4 +356,3 @@
 
 
 \end{document}
-
