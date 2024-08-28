@@ -90,7 +90,7 @@
     \[V' \subseteq V \And V' \neq \emptyset\]
     \[A' = \{a': a' \in [V']^2 \wedge a' \in A\}\]
 
-    (Observação: Os grafos usados no Teorema de Ramsey sempre serão grafos completos, ou seja, nunca terá 2 vértices que não são conetados diretamente por 1 aresta)
+    (Observação: Os grafos usados no \emph{Teorema de Ramsey} sempre serão grafos completos, ou seja, nunca terá 2 vértices que não são conetados diretamente por 1 aresta)
 \end{defi}
 
 \begin{defi}
@@ -128,7 +128,7 @@
 
 % ###### 1.16 ###### %
 \begin{teor}
-    (Teorema de Ramsey para grafos completos $2$\emph{-colorido}):
+    (\emph{Teorema de Ramsey} para grafos completos $2$\emph{-colorido}):
 
     Para qualquer $k \ge 2$, existe um $N$ inteiro tal que pra todo grafo $2$\emph{-colorido} com pelo menos $N$ vértices terá um subgrafo monocromático de tamanho $k$. Ou seja, temos que:
     \[N\longrightarrow(k)_2^2\]
@@ -260,25 +260,33 @@
 \begin{proof}
     Podemos abstrair a questão para se enquadrar na Teoria de Ramsey. Reescrevendo a questão ficamos com:
 
-    "Para todo $k$ inteiro positivo, existe um número inteiro positivo $M(k)$ tal que se um grafo $G = (V, A)$ completo com $V = [M(k)]$ for $k$\emph{-colorido}, então existirá um triangulo monocromático da forma $\{x, y, x+y\}$"
+    "Para todo $k$ inteiro positivo, existe um número inteiro positivo $M(k)$ tal que se o conjunto $[M(k)]$ for colorido em $k$ cores, então existira $3$ números de mesma cor tais que $\{x, y, x+y\}$"
+
+    Se associarmos cada numero com um vértice, poderemos criar um grafo, e se associarmos cada vértice com uma aresta, poderemos usar o \emph{Teorema de Ramsey}, chegando nesse enunciado:
+
+    "Para todo $k$ inteiro positivo, existe um número inteiro positivo $M(k)$ tal que se um grafo $G = (V, A)$ completo com $V = [M(k)]$ for $k$\emph{-colorido}, então existi um triangulo monocromático"
+
+    E com isso estará demonstrado. Agora basta fazer a associação entre os vértices e as arestas.
 
     O que pretendermos fazer é:
-    1) Fazer um paralelo com as cores dos vértices com as cores das arestas
-    2) Provar que se existir 3 vértices $x, y, x+y$ de mesma cor é o equivalente a existir um triangulo com as arestas de mesma cor
-    3) Usando o Teorema de Ramsey para grafos completos $k$\emph{-colorido}, vai existir um $M(k)$ tal que esse triangulo exista, logo existira 3 pontos $x, y, x+y$ de mesma cor
+    1) Fazer um paralelo com as cores dos vértices com as cores das arestas do grafo $G$ de tal maneira que, existir 3 vértices $x, y, x+y$ de mesma cor é o equivalente a existir um triangulo monocromático nesse grafo.
+    2) Usando o \emph{Teorema de Ramsey} para grafos completos $k$\emph{-colorido}, vai existir um $M(k)$ tal que esse triangulo exista, logo existira 3 pontos $x, y, x+y$ de mesma cor
 
     Para essa reescrita ser equivalente ao enunciado anterior, vamos elaborar um argumento que faz com que eles sejam equivalentes.
 
-    Vamos pegar um triangulo genérico com os vértices $z, y, x$ podemos definir as suas arestas como números:
-    \[a \equiv yx = |y-x|,\]
-    \[b \equiv zy = |z-y|,\]
-    \[c \equiv zx = |z-x|,\]
+    Vamos pegar um triangulo genérico com os vértices $z, y, x$ podemos definir as suas arestas e atribuir a elas números:
+    \[T_a \equiv yx \And a = |y-x|,\]
+    \[T_b \equiv zy \And b = |z-y|,\]
+    \[T_c \equiv zx \And c = |z-x|,\]
     Sem perda de generalidade, podemos considerar que $z > y > x$, logo teremos:
-    \[a \equiv yx = y-x,\]
-    \[b \equiv zy = z-y,\]
-    \[c \equiv zx = z-x,\]
+    \[T_a \equiv yx \And a = y-x,\]
+    \[T_b \equiv zy \And b = z-y,\]
+    \[T_c \equiv zx \And c = z-x,\]
     Com isso temos que $a + b = c$.
-    Além disso, sabemos que $a, b, c \in V$, já que $0 < a, b, c < M(k)$. Podemos definir a cor das arestas $a,b,c$ como sendo a cor dos v
+
+    Além disso, sabemos que $a, b, c \in V$, já que $0 < a, b, c < M(k)$. Podemos definir a cor das arestas $T_a, T_b, T_c$ como sendo a cor dos vértices $a, b, c$ do grafo respectivamente, ou seja, a aresta $A_i$ de valor $i$ terá a cor do vértice de numero $i$, apesar de ser o mesmo numero $i$, eles possuem significados diferentes em cada contexto, um seria o numero do vértice e o outro o valor da aresta (cada numero representa exclusivamente um único vértice, mas um conjunto de arestas podem possuir o mesmo valor, por isso eu denotei a aresta do triangulo de valor $i$ de $T_i$, para deixar claro essa distinção).
+
+    Com isso, se os vetrices $a, b, c$ forem de mesma cor, então existira um triangulo monocromático, exatamente o que procurávamos.
 \end{proof}
 % ###### 1.20 ###### %
 
@@ -344,7 +352,7 @@
 
 % ###### 2.1 ###### %
 \begin{teor}
-    (Teorema de Ramsey Infinito para grafos completos $2$\emph{-colorido}):
+    (\emph{Teorema de Ramsey} Infinito para grafos completos $2$\emph{-colorido}):
 
     Seja $Z$ um conjunto infinito . Para qualquer $p \ge 1$, se $[Z]^p$ é $2$\emph{-colorido}, então existe um conjunto infinito $H \in Z$ tal que $[H]^p$ é monocromático.
 \end{teor}
